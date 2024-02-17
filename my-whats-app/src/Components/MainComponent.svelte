@@ -2,176 +2,32 @@
 	import { writable } from 'svelte/store';
 	import type { Messages } from '../types/types';
 	import PopupModal from './PopupModal.svelte';
-
 	// export let receiverName: string;
 	// export let receiverImage: string;
 	let isModalVisible: boolean = false;
 	let message: string;
 	let messageType: string;
-	let receiverName=writable("");
-	let receiverInput:string;
+	let receiverName = writable('');
+	let receiverInput: string;
+	let files: any;
+	const chatMessage = writable<Messages[]>([]);
+	$: chatMessage;
+
 	function handleVisibility(messageTypeParam: string) {
 		isModalVisible = !isModalVisible;
 		messageType = messageTypeParam;
 	}
-	function handleReceiverNameChange(receiverInput:string){
-		if(receiverInput===''||receiverInput===undefined||receiverInput===null){
-            return alert('Lütfen bir isim giriniz.');
-        } 
+	function handleReceiverNameChange(receiverInput: string) {
+		if (receiverInput === '' || receiverInput === undefined || receiverInput === null) {
+			return alert('Lütfen bir isim giriniz.');
+		}
 		receiverName.set(receiverInput);
 	}
-	const chatMessage = writable<Messages[]>([{
-			messageType: 'Gönderen',
-			messageContent: 'cxvx',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'werew',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'rewrwe',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'qweasd',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'xvxc',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'DFLK;GJDIOGJIOFDGJIODFJGJIODGJIDFJGJHDGJHEU4HGEUIRGHIDU',
-			timeStamp: '18:17'
-		},{
-			messageType: 'Gönderen',
-			messageContent: 'cxvx',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'werew',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'rewrwe',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'qweasd',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'xvxc',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'DFLK;GJDIOGJIOFDGJIODFJGJIODGJIDFJGJHDGJHEU4HGEUIRGHIDU',
-			timeStamp: '18:17'
-		},{
-			messageType: 'Gönderen',
-			messageContent: 'cxvx',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'werew',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'rewrwe',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'qweasd',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'xvxc',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'DFLK;GJDIOGJIOFDGJIODFJGJIODGJIDFJGJHDGJHEU4HGEUIRGHIDU',
-			timeStamp: '18:17'
-		},{
-			messageType: 'Gönderen',
-			messageContent: 'cxvx',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'werew',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'rewrwe',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'qweasd',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'xvxc',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'DFLK;GJDIOGJIOFDGJIODFJGJIODGJIDFJGJHDGJHEU4HGEUIRGHIDU',
-			timeStamp: '18:17'
-		},{
-			messageType: 'Gönderen',
-			messageContent: 'cxvx',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'werew',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'rewrwe',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Alıcı',
-			messageContent: 'qweasd',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'xvxc',
-			timeStamp: '18:17'
-		},
-		{
-			messageType: 'Gönderen',
-			messageContent: 'DFLK;GJDIOGJIOFDGJIODFJGJIODGJIDFJGJHDGJHEU4HGEUIRGHIDU',
-			timeStamp: '18:17'
-		}]);
-
 	function HandleMessageCreation(content: string): any {
-        if(content===''||content===undefined||content===null){
-            return alert('Lütfen bir mesaj giriniz.');
-        } 
-		const newMessage:Messages = {
+		if (content === '' || content === undefined || content === null) {
+			return alert('Lütfen bir mesaj giriniz.');
+		}
+		const newMessage: Messages = {
 			messageType: `${messageType}`,
 			messageContent: content,
 			timeStamp: new Date().getHours() + ':' + new Date().getMinutes()
@@ -179,7 +35,38 @@
 		chatMessage.update((messages) => [...messages, newMessage]);
 		console.log(chatMessage);
 	}
-	$: chatMessage;
+	const acceptedFileTypes = ['application/json'];
+
+	function ExportChat() {
+		if($chatMessage.length===0){
+			return alert('Lütfen bir sohbet oluşturunuz.');
+		}
+		const outputjson = JSON.stringify($chatMessage);
+		const blod = new Blob([outputjson], { type: 'application/json; charset=utf-8' });
+		const url = window.URL.createObjectURL(blod);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'output.json';
+		document.body.appendChild(a);
+		a.click();
+		window.URL.revokeObjectURL(url);
+		document.body.removeChild(a);
+	}
+	function ImportChat() {
+		const newMessages = files[0];
+		const reader = new FileReader();
+		reader.onload = function (event) {
+			try {
+				const jsonContent = event.target?.result;
+				const jsonData = JSON.parse(jsonContent as string);
+				console.log(jsonData);
+				chatMessage.set(jsonData);
+			} catch (error) {
+				console.error('Error parsing JSON:', error);
+			}
+		};
+		reader.readAsText(newMessages);
+	}
 </script>
 
 <div>
@@ -187,12 +74,15 @@
 		<button on:click={() => handleVisibility('Gönderen')}>Create Receiver Message</button>
 		<button on:click={() => handleVisibility('Alıcı')}>Create Sender Message</button>
 		<div>
-			<input placeholder="Alici Adi" bind:value={receiverInput}/>
-			<button on:click={()=>handleReceiverNameChange(receiverInput)}>Alici Adini Kaydet</button>
+			<input placeholder="Alici Adi" bind:value={receiverInput} />
+			<button on:click={() => handleReceiverNameChange(receiverInput)}>Alici Adini Kaydet</button>
+			<button on:click={() => ExportChat()}>Sohbeti Dışa Aktar</button>
+			<input bind:files id="many" multiple type="file" accept={acceptedFileTypes.join(',')} />
+			<button on:click={() => ImportChat()}>Sohbeti İçeri Aktar</button>
 		</div>
 	</div>
 </div>
-<PopupModal bind:showModal={isModalVisible} {messageType}>
+<PopupModal bind:showModal={isModalVisible}>
 	<div slot="header" class="modal-dialog">
 		<h5 class="modal-title">{messageType} Icin Yeni Mesaj Oluştur</h5>
 	</div>
@@ -218,7 +108,7 @@
 			</div>
 			<div class="name">
 				{#key $receiverName}
-				<span>{$receiverName}</span>
+					<span>{$receiverName}</span>
 				{/key}
 			</div>
 			<div class="options">
@@ -234,48 +124,46 @@
 			</div>
 		</div>
 		<div class="messages">
-
-		{#key $chatMessage}
-			{#each $chatMessage as message}
-				<div class="message">
-					{#if message.messageType === 'Gönderen'}
-						<div class="divright">
-							<div class="message-container">
-								<p class="message-content">{message.messageContent}</p>
-								<span class="timestamp-wrapper">
-									<span class="timestamp">{message.timeStamp}</span>
-									<span class="read"><i class="bx bx-check-double"></i></span>
-								</span>
+			{#key $chatMessage}
+				{#each $chatMessage as message}
+					<div class="message">
+						{#if message.messageType === 'Gönderen'}
+							<div class="divright">
+								<div class="message-container">
+									<p class="message-content">{message.messageContent}</p>
+									<span class="timestamp-wrapper">
+										<span class="timestamp">{message.timeStamp}</span>
+										<span class="read"><i class="bx bx-check-double"></i></span>
+									</span>
+								</div>
 							</div>
-						</div>
-					{/if}
-					{#if message.messageType === 'Alıcı'}
-						<div class="divleft">
-							<div class="message-container">
-								<p class="message-content">{message.messageContent}</p>
-								<span class="timestamp-wrapper">
-									<span class="timestamp" style="color:lightgray">{message.timeStamp}</span>
-								</span>
+						{/if}
+						{#if message.messageType === 'Alıcı'}
+							<div class="divleft">
+								<div class="message-container">
+									<p class="message-content">{message.messageContent}</p>
+									<span class="timestamp-wrapper">
+										<span class="timestamp" style="color:lightgray">{message.timeStamp}</span>
+									</span>
+								</div>
 							</div>
-						</div>
-					{/if}
-				</div>
-			{/each}
-		{/key}
-	</div>
-
+						{/if}
+					</div>
+				{/each}
+			{/key}
+		</div>
 	</div>
 </div>
 
 <style>
 	.messages {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    max-height: 500px; /* Set the max height to whatever height you prefer */
-    overflow-y: scroll; /* Make it scrollable */
-}
-	.options{
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		max-height: 500px; /* Set the max height to whatever height you prefer */
+		overflow-y: scroll; /* Make it scrollable */
+	}
+	.options {
 		position: relative;
 		left: 9%;
 		display: flex;
@@ -292,7 +180,6 @@
 		top: 10%;
 		width: 58%;
 		max-height: 10%;
-		
 	}
 	.avatar img {
 		border-radius: 50%;
@@ -346,7 +233,7 @@
 		border-radius: 15px 0px 15px 15px;
 	}
 	.divleft {
-		background-color: rgb(31, 44, 52);
+		background-color: rgb(50, 58, 64);
 		color: white;
 		position: relative;
 		max-width: 15%;
@@ -356,8 +243,6 @@
 		word-wrap: break-word;
 		top: 10px;
 		border-radius: 0px 15px 15px 15px;
-
-
 	}
 	.message-container {
 		position: relative;
@@ -389,7 +274,6 @@
 		margin-bottom: 5px;
 		/* height: calc(100% - 12px); */
 		position: relative;
-	
 	}
 	.timestamp-wrapper .read {
 		display: inline-block;
@@ -400,6 +284,6 @@
 		width: 16px;
 	}
 	.read {
-		color: lightblue;
+		color: rgb(84, 158, 247);
 	}
 </style>
