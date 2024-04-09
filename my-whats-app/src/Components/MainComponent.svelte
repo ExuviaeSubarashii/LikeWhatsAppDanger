@@ -11,6 +11,7 @@
 	let receiverInput: string;
 	let files: any;
 	const chatMessage = writable<Messages[]>([]);
+	let isFileUploaded: boolean = false;
 	$: chatMessage;
 
 	function handleVisibility(messageTypeParam: string) {
@@ -38,7 +39,7 @@
 	const acceptedFileTypes = ['application/json'];
 
 	function ExportChat() {
-		if($chatMessage.length===0){
+		if ($chatMessage.length === 0) {
 			return alert('Lütfen bir sohbet oluşturunuz.');
 		}
 		const outputjson = JSON.stringify($chatMessage);
@@ -67,6 +68,11 @@
 		};
 		reader.readAsText(newMessages);
 	}
+	function ClearChat() {
+		chatMessage.set([]);
+		files=undefined;
+	}
+	$: isFileUploaded = files !== undefined && files.length > 0;
 </script>
 
 <div>
@@ -77,8 +83,13 @@
 			<input placeholder="Alici Adi" bind:value={receiverInput} />
 			<button on:click={() => handleReceiverNameChange(receiverInput)}>Alici Adini Kaydet</button>
 			<button on:click={() => ExportChat()}>Sohbeti Dışa Aktar</button>
+
 			<input bind:files id="many" multiple type="file" accept={acceptedFileTypes.join(',')} />
-			<button on:click={() => ImportChat()}>Sohbeti İçeri Aktar</button>
+			
+			<button on:click={() => ImportChat()} disabled={isFileUploaded === false}
+				>Sohbeti İçeri Aktar</button
+			>
+			<button on:click={() => ClearChat()} disabled={isFileUploaded === false}>Reset Chat</button>
 		</div>
 	</div>
 </div>
